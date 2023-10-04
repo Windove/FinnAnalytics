@@ -17,10 +17,6 @@ export const siteConfig = {
       href: "/pricing",
     },
     {
-      label: "API",
-      href: "/apiTest",
-    },
-    {
       label: "About",
       href: "/about",
     },
