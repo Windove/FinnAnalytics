@@ -34,11 +34,15 @@ export const FinnItem: React.FC<FinnItemProps> = ({ itemData }) => {
                             className='w-full h-full object-cover'
                         />}
                 </CardBody>
-                <CardFooter className="text-small justify-between h-1/6 overflow-hidden">
-                    <b className="whitespace-nowrap overflow-hidden text-overflow-ellipsis">{itemData.heading}</b>
-                    {/* Check if price exists before rendering */}
-                    {itemData.price && <p className="whitespace-nowrap overflow-hidden text-overflow-ellipsis text-default-500">{itemData.price.amount} kr</p>}
+                <CardFooter className="grid grid-cols-[4fr,1fr] gap-2 text-small h-1/6 overflow-hidden">
+                    <div className="whitespace-nowrap overflow-hidden text-overflow-ellipsis w-full text-left">
+                        <b className="whitespace-nowrap overflow-hidden text-overflow-ellipsis">{itemData.heading}</b>
+                    </div>
+                    <div className='m-0 p-0 justify-self-end'>
+                        {itemData.price && <p className="whitespace-nowrap overflow-hidden text-overflow-ellipsis text-default-500 justify-self-end">{itemData.price.amount} kr</p>}
+                    </div>
                 </CardFooter>
+
             </Card>
         </div>
     );
