@@ -17,11 +17,17 @@ interface FinnItemProps {
 
 export const FinnItem: React.FC<FinnItemProps> = ({ itemData }) => {
     return (
-        <div className="gap-2 grid grid-cols-2 sm:grid-cols-4">
+        <div className="mt-8">
             <Card shadow="sm" key={itemData.id} isPressable onPress={() => console.log("item pressed")}>
                 <CardBody className="overflow-visible p-0">
                     {/* Check if image exists before rendering */}
-                    {itemData.image && <img src={itemData.image.url} alt={itemData.heading} />}
+                    {
+                        itemData.image &&
+                        <img
+                            src={itemData.image.url}
+                            alt={itemData.heading}
+                            className='h-64 object-cover'
+                        />}
                 </CardBody>
                 <CardFooter className="text-small justify-between">
                     <b>{itemData.heading}</b>
