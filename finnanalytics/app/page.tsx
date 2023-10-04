@@ -13,6 +13,13 @@ import { FinnItem } from "@/components/finnItem";
 
 interface Result {
 	heading: string;
+	id: number;
+	image: {
+		url: string;
+	}
+	price: {
+		amount: number;
+	}
 }
 
 export default function Home() {
@@ -74,11 +81,11 @@ export default function Home() {
 			{results.length > 0 && (
 				<div className="mt-8">
 					<h3>Results:</h3>
-					<ul>
-						{results.map((results) => (
-							FinnItem({ itemData: results })
+					<div>
+						{results.map((item) => (
+							<FinnItem key={item.id} itemData={item} />
 						))}
-					</ul>
+					</div>
 				</div>
 			)}
 
