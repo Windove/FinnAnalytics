@@ -4,7 +4,6 @@ import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import { Providers } from "./providers";
 import { Navbar } from "@/components/navbar";
-import { Link } from "@nextui-org/link";
 import clsx from "clsx";
 
 export const metadata: Metadata = {
@@ -45,7 +44,10 @@ export default function RootLayout({
 							{children}
 						</main>
 						<footer className="w-full flex items-center justify-center py-3">
-							<h3>Lukas Ringdalen Thrane</h3>
+							<h3>Made by&nbsp;</h3>
+							<h3 className="bg-gradient-to-r from-[#6FEE8D] to-[#17c964] bg-clip-text text-transparent">
+								Lukas Ringdalen Thrane
+							</h3>
 						</footer>
 					</div>
 				</Providers>
