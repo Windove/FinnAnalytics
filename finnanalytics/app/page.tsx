@@ -8,14 +8,25 @@ import { siteConfig } from "@/config/site";
 import { title, subtitle } from "@/components/primitives";
 import { GithubIcon } from "@/components/icons";
 import { Button } from "@nextui-org/button";
+import { useState } from "react";
+import { FinnItem } from "@/components/finnItem";
 
+interface Result {
+	heading: string;
+}
 
 export default function Home() {
+	const [results, setResults] = useState<Result[]>([]);
+
 	const makeApiCall = async () => {
-		await fetch("/api/finn", {
+		const response = await fetch("/api/finn", {
 			method: "POST",
 			body: JSON.stringify({ hello: "world" }),
 		});
+
+		const data = await response.json();
+		console.log(data.docs)
+		setResults(data.docs || []);
 	};
 
 	return (
@@ -59,6 +70,18 @@ export default function Home() {
 					</span>
 				</Snippet>
 			</div>
+
+			{results.length > 0 && (
+				<div className="mt-8">
+					<h3>Results:</h3>
+					<ul>
+						{results.map((results) => (
+							FinnItem({ itemData: results })
+						))}
+					</ul>
+				</div>
+			)}
+
 		</section>
 	);
 }
