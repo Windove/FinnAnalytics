@@ -6,32 +6,31 @@ export const MARKET_LIST = {
     båt: 'boat'
 };
 
-export const LOCATIONS = {
-    Akershus: '0.20003',
-    'Aust-Agder': '0.20010',
-    Buskerud: '0.20007',
-    Finnmark: '0.20020',
-    Hedmark: '0.20005',
-    Hordaland: '0.20013',
-    'Møre og Romsdal': '0.20015',
-    Nordland: '0.20018',
-    Oppland: '0.20006',
-    Oslo: '0.20061',
-    Rogaland: '0.20012',
-    'Sogn og Fjordane': '0.20014',
-    Telemark: '0.20009',
-    Troms: '0.20019',
-    Trøndelag: '0.20016',
-    Vestfold: '0.20008',
-    'Vest-Agder': '0.20011',
-    Østfold: '0.20002'
-};
+export const Locations = [
+    {label: 'Akershus', value: '0.20003'},
+    {label: 'Aust-Agder', value: '0.20010'},
+    {label: 'Buskerud', value: '0.20007'},
+    {label: 'Finnmark', value: '0.20020'},
+    {label: 'Hedmark', value: '0.20005'},
+    {label: 'Hordaland', value: '0.20013'},
+    {label: 'Møre og Romsdal', value: '0.20015'},
+    {label: 'Nordland', value: '0.20018'},
+    {label: 'Oppland', value: '0.20006'},
+    {label: 'Oslo', value: '0.20061'},
+    {label: 'Rogaland', value: '0.20012'},
+    {label: 'Sogn og Fjordane', value: '0.20014'},
+    {label: 'Telemark', value: '0.20009'},
+    {label: 'Troms', value: '0.20019'},
+    {label: 'Trøndelag', value: '0.20016'},
+    {label: 'Vestfold', value: '0.20008'},
+    {label: 'Vest-Agder', value: '0.20011'},
+    {label: 'Østfold', value: '0.20002'}
+];
 
-export const SORT = {
-    relevant: 0,
-    nyeste: 1,
-    eldste: 2,
-    lav: 3,
-    høy: 4,
-    nærmest: 5
-};
+export const Sort = [
+    {label: 'Relevance', value: '0'},
+    {label: 'New', value: '1'},
+    {label: 'Old', value: '2'},
+    {label: 'Price: Low - High', value: '3'},
+    {label: 'Price: High - Low', value: '4'},
+]

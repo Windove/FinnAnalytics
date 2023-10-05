@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import { FinnItem } from "@/components/finnItem";
 import { SearchIcon } from "@/components/icons";
 import { useRef } from 'react';
-import { Pagination, Button, Input } from "@nextui-org/react";
+import { Pagination, Button, Input, Select, SelectSection, SelectItem } from "@nextui-org/react";
+import { Locations, Sort } from "@/lib/constants";
 
 
 interface Result {
@@ -26,8 +27,8 @@ export default function Home() {
 
 	// states
 	const [page, setPage] = useState<number>(1);
-	const [sort, setSort] = useState<number>(3);
-	const [location, setLocation] = useState<number>(0.20061);
+	const [sort, setSort] = useState<number>(0);
+	const [location, setLocation] = useState<number>(0);
 	const [searchQuery, setSearchQuery] = useState<string>("");
 	const [results, setResults] = useState<Result[]>([]);
 	const [totMatches, setTotMatches] = useState<number>(0);
@@ -66,7 +67,7 @@ export default function Home() {
 
 	useEffect(() => {
 		makeApiCall(searchQuery);
-	}, [page, searchQuery]);
+	}, [page, sort, location, searchQuery]);
 
 	return (
 		<section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
@@ -86,6 +87,58 @@ export default function Home() {
 					<Button ref={buttonRef} type="submit" color="primary" variant="ghost">Search</Button>
 				</div>
 			</form>
+
+			<Select
+				label="Sort by"
+				defaultSelectedKeys={["0"]}
+				disallowEmptySelection
+				className="max-w-xs"
+				onSelectionChange={(e) => {
+					const sortValue = Array.from(e)[0];
+					setSort(Number(sortValue));
+				}}
+				
+			>
+				{Sort.map((sort) => (
+					<SelectItem
+						key={sort.value}
+						value={sort.value}
+						textValue={sort.label}
+					>
+						{sort.label}
+					</SelectItem>
+				))}
+			</Select>
+
+
+			<Select
+				label="Location"
+				defaultSelectedKeys={["0"]}
+				disallowEmptySelection
+				className="max-w-xs"
+				onSelectionChange={(e) => {
+					const locationValue = Array.from(e)[0];
+					setLocation(Number(locationValue));
+				}}
+			>
+				<SelectSection showDivider>
+					<SelectItem key="0" value="all" textValue="All">
+						All
+					</SelectItem>
+				</SelectSection>
+				<SelectSection>
+					{Locations.map((location) => (
+						<SelectItem
+							key={location.value}
+							value={location.value}
+							textValue={location.label}
+						>
+							{location.label}
+						</SelectItem>
+					))}
+				</SelectSection>
+			</Select>
+
 
 
 			{results.length > 0 && (
