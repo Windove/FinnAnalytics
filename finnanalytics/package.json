@@ -42,6 +42,7 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
-    "@nextui-org/card": "^2.0.21"
+    "@nextui-org/card": "^2.0.21",
+    "@nextui-org/react": "^2.1.13"
   }
 }

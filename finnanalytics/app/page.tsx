@@ -1,12 +1,12 @@
 'use client'
 
 import { title } from "@/components/primitives";
-import { Button } from "@nextui-org/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FinnItem } from "@/components/finnItem";
-import { Input } from "@nextui-org/input";
 import { SearchIcon } from "@/components/icons";
 import { useRef } from 'react';
+import { Pagination, Button, Input } from "@nextui-org/react";
+
 
 interface Result {
 	heading: string;
@@ -23,12 +23,19 @@ export default function Home() {
 	const inputRef = useRef<HTMLInputElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);
 
+	// states
+	const [page, setPage] = useState<number>(1);
+	const [sort, setSort] = useState<number>(3);
+	const [location, setLocation] = useState<number>(0.20061);
 	const [searchQuery, setSearchQuery] = useState<string>("");
+	const [results, setResults] = useState<Result[]>([]);
+	const [totMatches, setTotMatches] = useState<number>(0);
+
 	const searchInput = (
 		<Input
 			ref={inputRef}
 			value={searchQuery}
-			onChange={(e) => setSearchQuery(e.target.value)}
+			onChange={(e: any) => setSearchQuery(e.target.value)}
 			aria-label="Search"
 			classNames={{
 				inputWrapper: "bg-default-100",
@@ -43,17 +50,22 @@ export default function Home() {
 		/>
 	);
 
-
-	const [results, setResults] = useState<Result[]>([]);
 	const makeApiCall = async (query: string) => {
-		const response = await fetch(`/api/finn?query=${encodeURIComponent(query)}`, {
+		const response = await fetch(`/api/finn?query=${encodeURIComponent(query)}&sort=${sort}&page=${page}&location=${location}`, {
 			method: "GET",
 		});
 
 		const data = await response.json();
+
 		console.log(data.docs);
+		setTotMatches(data.metadata.result_size.match_count);
 		setResults(data.docs || []);
+		console.log(totMatches);
 	};
+
+	useEffect(() => {
+		makeApiCall(searchQuery);
+	}, [page, searchQuery]);
 
 	return (
 		<section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
@@ -82,6 +94,21 @@ export default function Home() {
 						{results.map((result, index) => (
 							<FinnItem key={index} itemData={result} />
 						))}
+					</div>
+					<div className="flex justify-center mt-12">
+						<Pagination
+							showControls
+							siblings={2}
+							total={Math.ceil(totMatches / 50)}
+							initialPage={1}
+							size={"lg"}
+							variant="faded"
+							onChange={
+								(e) => {
+									setPage(e);
+								}
+							}
+						/>
 					</div>
 				</div>
 			)}
