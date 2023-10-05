@@ -12,6 +12,7 @@ interface FinnItemProps {
         price?: {
             amount: number;
         }
+        canonical_url: string;
     }
 }
 
@@ -21,7 +22,7 @@ export const FinnItem: React.FC<FinnItemProps> = ({ itemData }) => {
             <Card
                 shadow="sm"
                 key={itemData.id}
-                isPressable onPress={() => console.log("item pressed")}
+                isPressable onPress={() => window.open(itemData.canonical_url, '_blank')}
                 style={{ width: '300px', height: '400px' }}
             >
                 <CardBody className="overflow-visible p-0 h-5/6">

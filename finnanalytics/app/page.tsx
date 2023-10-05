@@ -17,6 +17,7 @@ interface Result {
 	price: {
 		amount: number;
 	}
+	canonical_url: string;
 }
 
 export default function Home() {
@@ -99,7 +100,7 @@ export default function Home() {
 						<Pagination
 							showControls
 							siblings={2}
-							total={Math.ceil(totMatches / 50)}
+							total={Math.min(Math.ceil(totMatches / 50), 50)}
 							initialPage={1}
 							size={"lg"}
 							variant="faded"
