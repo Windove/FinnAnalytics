@@ -6,7 +6,7 @@ import { FinnItem } from "@/components/finnItem";
 import { SearchIcon } from "@/components/icons";
 import { useRef } from 'react';
 import { Pagination, Button, Input, Select, SelectSection, SelectItem } from "@nextui-org/react";
-import { Locations, Sort } from "@/lib/constants";
+import { Locations, Sort, SearchKeys } from "@/lib/constants";
 
 
 interface Result {
@@ -22,6 +22,7 @@ interface Result {
 }
 
 export default function Home() {
+	// refs
 	const inputRef = useRef<HTMLInputElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -32,7 +33,31 @@ export default function Home() {
 	const [searchQuery, setSearchQuery] = useState<string>("");
 	const [results, setResults] = useState<Result[]>([]);
 	const [totMatches, setTotMatches] = useState<number>(0);
+	const [searchkey, setSearchKey] = useState<{ value: string, vertical: string }>({
+		value: SearchKeys[0].value,
+		vertical: SearchKeys[0].vertical
+	});
 
+	// function to call api
+	const makeApiCall = async (query: string) => {
+		const response = await fetch(`/api/finn?searchkey=${encodeURIComponent(searchkey.value)}&query=${encodeURIComponent(query)}&sort=${sort}&page=${page}&location=${location}&vertical=${encodeURIComponent(searchkey.vertical)}`, {
+			method: "GET",
+		});
+
+		const data = await response.json();
+
+		console.log(data.docs);
+		setTotMatches(data.metadata.result_size.match_count);
+		setResults(data.docs || []);
+		console.log(totMatches);
+	};
+
+	// update search when inputs change
+	useEffect(() => {
+		makeApiCall(searchQuery);
+	}, [page, sort, location, searchkey, searchQuery]);
+
+	// search input
 	const searchInput = (
 		<Input
 			ref={inputRef}
@@ -51,23 +76,6 @@ export default function Home() {
 			type="search"
 		/>
 	);
-
-	const makeApiCall = async (query: string) => {
-		const response = await fetch(`/api/finn?query=${encodeURIComponent(query)}&sort=${sort}&page=${page}&location=${location}`, {
-			method: "GET",
-		});
-
-		const data = await response.json();
-
-		console.log(data.docs);
-		setTotMatches(data.metadata.result_size.match_count);
-		setResults(data.docs || []);
-		console.log(totMatches);
-	};
-
-	useEffect(() => {
-		makeApiCall(searchQuery);
-	}, [page, sort, location, searchQuery]);
 
 	return (
 		<section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
@@ -88,58 +96,81 @@ export default function Home() {
 				</div>
 			</form>
 
-			<Select
-				label="Sort by"
-				defaultSelectedKeys={["0"]}
-				disallowEmptySelection
-				className="max-w-xs"
-				onSelectionChange={(e) => {
-					const sortValue = Array.from(e)[0];
-					setSort(Number(sortValue));
-				}}
-				
-			>
-				{Sort.map((sort) => (
-					<SelectItem
-						key={sort.value}
-						value={sort.value}
-						textValue={sort.label}
-					>
-						{sort.label}
-					</SelectItem>
-				))}
-			</Select>
+			<div className="flex gap-4 mt-4 w-1/2">
+				<Select
+					className="max-w-xs"
+					label="Sort by"
+					defaultSelectedKeys={["0"]}
+					disallowEmptySelection
+					onSelectionChange={(e) => {
+						const sortValue = Array.from(e)[0];
+						setSort(Number(sortValue));
+					}}
 
-
-			<Select
-				label="Location"
-				defaultSelectedKeys={["0"]}
-				disallowEmptySelection
-				className="max-w-xs"
-				onSelectionChange={(e) => {
-					const locationValue = Array.from(e)[0];
-					setLocation(Number(locationValue));
-				}}
-			>
-				<SelectSection showDivider>
-					<SelectItem key="0" value="all" textValue="All">
-						All
-					</SelectItem>
-				</SelectSection>
-				<SelectSection>
-					{Locations.map((location) => (
+				>
+					{Sort.map((sort) => (
 						<SelectItem
-							key={location.value}
-							value={location.value}
-							textValue={location.label}
+							key={sort.value}
+							value={sort.value}
+							textValue={sort.label}
 						>
-							{location.label}
+							{sort.label}
 						</SelectItem>
 					))}
-				</SelectSection>
-			</Select>
+				</Select>
 
+				<Select
+					className="max-w-xs"
+					label="Location"
+					defaultSelectedKeys={["0"]}
+					disallowEmptySelection
+					onSelectionChange={(e) => {
+						const locationValue = Array.from(e)[0];
+						setLocation(Number(locationValue));
+					}}
+				>
+					<SelectSection showDivider>
+						<SelectItem key="0" value="all" textValue="All">
+							All
+						</SelectItem>
+					</SelectSection>
+					<SelectSection>
+						{Locations.map((location) => (
+							<SelectItem
+								key={location.value}
+								value={location.value}
+								textValue={location.label}
+							>
+								{location.label}
+							</SelectItem>
+						))}
+					</SelectSection>
+				</Select>
 
+				<Select
+					className="max-w-xs"
+					label="Market type"
+					defaultSelectedKeys={["0"]}
+					disallowEmptySelection
+					onSelectionChange={(e) => {
+						const searchkeyValue = Array.from(e)[0];
+						setSearchKey({
+							value: SearchKeys[Number(searchkeyValue)].value,
+							vertical: SearchKeys[Number(searchkeyValue)].vertical
+						});
+					}}
+				>
+					{SearchKeys.map((searchkey, index) => (
+						<SelectItem
+							key={index}
+							value={searchkey.value}
+							textValue={searchkey.label}
+						>
+							{searchkey.label}
+						</SelectItem>
+					))}
+				</Select>
+			</div>
 
 			{results.length > 0 && (
 				<div className="mt-8">

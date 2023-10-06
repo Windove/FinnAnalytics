@@ -1,5 +1,5 @@
-export const searchKeys = [
-    {label: 'Market', value: 'BAP_COMMON', vertical: 'bap'},
+export const SearchKeys = [
+    {label: 'Market Place', value: 'BAP_COMMON', vertical: 'bap'},
     {label: 'Real Estate', value: 'REALESTATE_HOMES', vertical: 'realestate'},
     {label: 'Car', value: 'CAR_USED', vertical: 'car'},
     {label: 'MC', value: 'MC_USED', vertical: 'mc'},
@@ -26,3 +26,4 @@ export const Sort = [
     {label: 'Price: Low - High', value: '3'},
     {label: 'Price: High - Low', value: '4'},
 ];
+

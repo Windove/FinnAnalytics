@@ -7,13 +7,15 @@ export async function GET(req: Request) {
     const sort = url.searchParams.get("sort") || "0"; // default to "relevant" if no sort is provided
     const page = url.searchParams.get("page") || "1"; // default to page 1 if not provided
     const location = url.searchParams.get("location") || 0; // default to Oslo if not provided
+    const searchkey = url.searchParams.get("searchkey") || "BAP_COMMON";
+    const vertical = url.searchParams.get("vertical") || "BAP";
 
     let apiUrl: string;
     // apiURL base: https://www.finn.no/api/search-qf?searchkey=SEARCH_ID_BAP_COMMON&location=0.20061&q=&sort=3&page=1&vertical=BAP$rows=100
     if (location == "0") {
-        apiUrl = `https://www.finn.no/api/search-qf?searchkey=SEARCH_ID_BAP_COMMON&q=${encodeURIComponent(query)}&sort=${encodeURIComponent(sort)}&page=${encodeURIComponent(page)}&vertical=BAP`;
+        apiUrl = `https://www.finn.no/api/search-qf?searchkey=SEARCH_ID_${encodeURIComponent(searchkey)}&q=${encodeURIComponent(query)}&sort=${encodeURIComponent(sort)}&page=${encodeURIComponent(page)}&vertical=${encodeURIComponent(vertical)}`;
     } else {
-        apiUrl = `https://www.finn.no/api/search-qf?searchkey=SEARCH_ID_BAP_COMMON&location=${encodeURIComponent(location)}&q=${encodeURIComponent(query)}&sort=${encodeURIComponent(sort)}&page=${encodeURIComponent(page)}&vertical=BAP`;
+        apiUrl = `https://www.finn.no/api/search-qf?searchkey=SEARCH_ID_${encodeURIComponent(searchkey)}&location=${encodeURIComponent(location)}&q=${encodeURIComponent(query)}&sort=${encodeURIComponent(sort)}&page=${encodeURIComponent(page)}&vertical=${encodeURIComponent(vertical)}`;
     }
 
     console.log(apiUrl);
