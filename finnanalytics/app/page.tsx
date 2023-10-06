@@ -47,7 +47,7 @@ export default function Home() {
 		const data = await response.json();
 
 		console.log(data.docs);
-		setTotMatches(data.metadata.result_size.match_count);
+		setTotMatches(data.metadata.result_size.group_count);
 		setResults(data.docs || []);
 		console.log(totMatches);
 	};
