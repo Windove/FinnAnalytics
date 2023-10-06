@@ -125,9 +125,16 @@ export default function Home() {
 					defaultSelectedKeys={["0"]}
 					disallowEmptySelection
 					onSelectionChange={(e) => {
-						const locationValue = Array.from(e)[0];
+						let locationValue = Array.from(e)[0].toString();
+						if (
+							searchkey.value !== "BAP_COMMON" &&
+							searchkey.value !== "REALESTATE_HOMES"
+						) {
+							locationValue = locationValue.replace('0.', '');
+						}
 						setLocation(Number(locationValue));
 					}}
+					
 				>
 					<SelectSection showDivider>
 						<SelectItem key="0" value="all" textValue="All">
